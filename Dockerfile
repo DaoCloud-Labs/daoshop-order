@@ -10,10 +10,14 @@ ADD $AGENT_REPO_URL /
 
 COPY target/"$DIST_NAME-$APP_VERSION.jar" /"$DIST_NAME.jar"
 
+RUN set -ex; \
+    tar -zxf /agent-2.0.0.gz; \
+    rm -rf agent-2.0.0.gz;
+
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone
 
 EXPOSE 18082
 
-ENTRYPOINT java  -javaagent:/skywalking-agent/skywalking-agent.jar \
+ENTRYPOINT java -javaagent:/skywalking-agent/skywalking-agent.jar \
            -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap $JAVA_OPTS -jar /$DIST_NAME.jar
