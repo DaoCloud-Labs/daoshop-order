@@ -19,7 +19,6 @@ public class OrderVo {
 
     private int count;
     private double price;
-    private double amount;
     private long productId;
     private String productName;
 

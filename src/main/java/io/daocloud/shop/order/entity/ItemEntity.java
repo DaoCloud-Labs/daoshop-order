@@ -4,41 +4,44 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.core.annotation.Order;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Package io.daocloud.shop.order.entity
- * @Classname OrderEntity
+ * @Classname ItemEntity
  * @Description TODO
- * @Date 2019/3/18 上午11:47
+ * @Date 2019/3/19 下午5:30
  * @Created by chenghao
- * @desc OrderEntity
+ * @desc ItemEntity
  * @project order
  */
-
 @Entity
-@Table(name = "t_order")
+@Table(name = "t_item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderEntity {
+public class ItemEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
-    private Long userId;
+    private Long productId;
 
     @Column
-    private double amount;
+    private double price;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Column
+    private int count;
+
+    @ManyToOne()
     @JoinColumn
-    private List<ItemEntity> items =  new ArrayList<>();
+    private OrderEntity order;
 
-
+    @Column
+    private String productName;
 }

@@ -1,13 +1,16 @@
 package io.daocloud.shop.order.controller;
 
+import io.daocloud.shop.order.entity.ItemEntity;
 import io.daocloud.shop.order.entity.OrderEntity;
+import io.daocloud.shop.order.repository.ItemRepository;
 import io.daocloud.shop.order.repository.OrderRepository;
 import io.daocloud.shop.order.vo.OrderVo;
-import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Package io.daocloud.shop.order.controller
@@ -23,21 +26,32 @@ import java.util.List;
 public class OrderController {
 
     private final OrderRepository orderRepository;
+    private final ItemRepository itemRepository;
 
-    public OrderController(OrderRepository orderRepository) {
+    public OrderController(OrderRepository orderRepository, ItemRepository itemRepository) {
         this.orderRepository = orderRepository;
+        this.itemRepository = itemRepository;
     }
 
     @PostMapping("/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestBody OrderVo orderVo,
+    @Transactional
+    public void createOrder(@RequestBody List<OrderVo> orderVos,
                             @RequestHeader("token")Long token){
+        Double amount = orderVos.stream().map(e -> e.getCount() * e.getPrice())
+                .reduce(Double::sum).orElse(0.0);
+        OrderEntity orderEntity = OrderEntity.builder().userId(token).amount(amount).build();
 
-        orderRepository.save(OrderEntity.builder().userId(token).amount(orderVo.getAmount())
-                .count(orderVo.getCount())
-                .price(orderVo.getPrice())
-                .productId(orderVo.getProductId())
-                .productName(orderVo.getProductName()).build());
+        List<ItemEntity> collect = orderVos.stream().map(e -> {
+            ItemEntity itemEntity = ItemEntity.builder().count(e.getCount())
+                    .price(e.getPrice())
+                    .productId(e.getProductId())
+                    .productName(e.getProductName()).build();
+
+            return itemEntity;
+        }).collect(Collectors.toList());
+        orderEntity.setItems(collect);
+        OrderEntity save = orderRepository.save(orderEntity);
 
     }
     @GetMapping("/user/{id}/orders")

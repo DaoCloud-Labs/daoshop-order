@@ -2,6 +2,7 @@ package io.daocloud.shop.order.repository;
 
 import io.daocloud.shop.order.entity.OrderEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * @Package io.daocloud.shop.order.repository
@@ -12,7 +13,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @desc OrderRepository
  * @project order
  */
-
+@Repository
 public interface OrderRepository extends PagingAndSortingRepository<OrderEntity,Long> {
 
 
