@@ -35,10 +35,11 @@ public class OrderEntity {
 
     @Column
     private double amount;
+    @Column
+    private String version;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn
     private List<ItemEntity> items =  new ArrayList<>();
-
 
 }

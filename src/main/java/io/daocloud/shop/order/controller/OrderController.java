@@ -40,7 +40,9 @@ public class OrderController {
                             @RequestHeader("token")Long token){
         Double amount = orderVos.stream().map(e -> e.getCount() * e.getPrice())
                 .reduce(Double::sum).orElse(0.0);
-        OrderEntity orderEntity = OrderEntity.builder().userId(token).amount(amount).build();
+        OrderEntity orderEntity = OrderEntity.builder().userId(token)
+                .version("v2")
+                .amount(amount).build();
 
         List<ItemEntity> collect = orderVos.stream().map(e -> {
             ItemEntity itemEntity = ItemEntity.builder().count(e.getCount())
