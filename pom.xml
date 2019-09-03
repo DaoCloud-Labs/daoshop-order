@@ -87,7 +87,7 @@
     <repositories>
         <repository>
             <id>labs-snapshots</id>
-            <url>http://nexus.mschina.io/nexus/content/repositories/labs-snapshot/</url>
+            <url>https://nexus.daocloud.io/repository/labs-snapshot/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -95,7 +95,7 @@
         <repository>
             <id>labs-releases</id>
             <url>
-                http://nexus.mschina.io/nexus/content/repositories/labs/
+                https://nexus.daocloud.io/repository/labs/
             </url>
         </repository>
     </repositories>
