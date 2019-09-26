@@ -53,6 +53,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.daocloud</groupId>
+            <artifactId>discovery</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -79,15 +84,8 @@
     <repositories>
         <repository>
             <id>labs-snapshots</id>
-            <url>https://nexus.daocloud.io/repository/dx-public/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>labs-releases</id>
             <url>
-                https://nexus.daocloud.io/repository/dx-public/
+                https://nexus.daocloud.io/repository/labs-snapshot/
             </url>
         </repository>
     </repositories>
